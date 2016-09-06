@@ -244,6 +244,13 @@ be available through this element.
         },
 
         __updatePersistedData: function() {
+          // patch issue #43
+          // https://github.com/PolymerElements/app-storage/issues/43
+          // app-indexeddb-mirror.html:249 Uncaught TypeError: Cannot read property 'validateSession' of undefined
+          if(!this.client){
+            this.set("workerUrl", this.resolveUrl('./'));
+          }
+
           this._log('Updating persisted data..');
           this._enqueueTransaction(function() {
             return this.client.validateSession(this.session);
